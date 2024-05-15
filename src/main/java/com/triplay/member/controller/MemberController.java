@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.triplay.member.service.MemberService;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/member")
 @CrossOrigin(origins = {"*"}, maxAge = 60000)
 public class MemberController {
 	@Autowired
