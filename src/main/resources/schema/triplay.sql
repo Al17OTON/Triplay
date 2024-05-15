@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`member` (
   `token` VARCHAR(1000) NOT NULL,
   `member_status` VARCHAR(255) default 'ACTIVE',
   `score` INT NULL DEFAULT 0,
+  `member_register_time` DATETIME NOT NULL default CURRENT_TIMESTAMP,
   check (member_status in ('ACTIVE', 'WITHDRAWN')),
   PRIMARY KEY (`member_id`))
 ENGINE = InnoDB;
