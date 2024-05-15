@@ -44,7 +44,7 @@ DROP TABLE IF EXISTS `triplay`.`game` ;
 
 CREATE TABLE IF NOT EXISTS `triplay`.`game` (
   `game_id` INT NOT NULL AUTO_INCREMENT,
-  `seed_id` VARCHAR(45) NOT NULL,
+  `seed_id` INT NOT NULL,
   `member_id` VARCHAR(255) NOT NULL,
   `difficulty` VARCHAR(45) NULL,
   `game_title` VARCHAR(255) NULL,
