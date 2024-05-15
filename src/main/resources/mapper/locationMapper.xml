@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.triplay.game.mapper.LocationMapper">
+
+	<resultMap type="com.triplay.game.dto.SidoDto"
+		id="sidoDto">
+		<result column="sido_code" property="sidoCode" />
+		<result column="sido_name" property="sidoName" />
+	</resultMap>
+	
+	<resultMap type="com.triplay.game.dto.GugunDto"
+		id="gugunDto">
+		<result column="gugun_code" property="gugunCode" />
+		<result column="gugun_name" property="gugunName" />
+	</resultMap>
+
+	<select id="getSidoList" resultType="sidoDto">
+		select sido_code, sido_name
+		from sido
+	</select>
+	
+	<select id="getGugunList" parameterType="int" resultType="gugunDto">
+		select gugun_code, gugun_name
+		from gugun
+		where sido_code = #{sidoCode}
+	</select>
+
+</mapper>
