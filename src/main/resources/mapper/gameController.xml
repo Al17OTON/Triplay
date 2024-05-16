@@ -12,6 +12,9 @@
 		<result column="member_id" property="memberId" />
 		<result column="difficulty" property="difficulty" />
 		<result column="game_title" property="gameTitle" />
+		<result column="keyword" property="keyword" />
+		<result column="count" property="count" />
+		<result column="seed_info" property="seedInfo" />
 	</resultMap>
 	
 	
@@ -24,8 +27,8 @@
 	</insert>
 	
 	<select id="getGameList" resultType="gameDto">
-		select *
-		from game
+		select s.seed_id, s.keyword, s.count, s.seed_info, g.member_id, g.difficulty, g.game_title, g.game_id
+		from seed s join game g on s.seed_id = g.seed_id;
 	</select>
 	
 	<select id="getGame" parameterType="int" resultType="gameDto">
