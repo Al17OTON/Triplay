@@ -48,6 +48,8 @@ public class MemberController {
 			return RestUtil.makeErrorResponseEntity("로그인 실패");
 		}
 		
+		if(loginMember == null) return RestUtil.makeErrorResponseEntity("로그인 실패");
+		
 		Map<String, Object> res = null;
 		
 		String access_token = jwtUtil.createAccessToken(loginMember.getMember_id());
@@ -76,8 +78,7 @@ public class MemberController {
 	
 	@PutMapping("/modify")
 	public ResponseEntity<Map<String, Object>> modifyMember(@RequestHeader("access_token") String access_token, @RequestBody MemberDto member) {
-		System.out.println(access_token);
-		if(!jwtUtil.checkToken(access_token)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+		if(!jwtUtil.checkToken(access_token, member.getMember_id())) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
 		
 		try {
 			memberService.modifyMember(member);
@@ -88,9 +89,9 @@ public class MemberController {
 		return RestUtil.makeResponseEntity("회원수정 성공");
 	}
 	
-	@DeleteMapping("/remove")
+	@PutMapping("/remove")
 	public ResponseEntity<Map<String, Object>> removeMember(@RequestHeader("access_token") String access_token, @RequestParam("member_id") String member_id) {
-		if(!jwtUtil.checkToken(access_token)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+		if(!jwtUtil.checkToken(access_token, member_id)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
 		
 		try {
 			memberService.removeMember(member_id);
@@ -102,7 +103,7 @@ public class MemberController {
 	
 	@GetMapping("/getMember")
 	public ResponseEntity<Map<String, Object>> getMember(@RequestHeader("access_token") String access_token, @RequestParam("member_id") String member_id) {
-		if(!jwtUtil.checkToken(access_token)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+		if(!jwtUtil.checkToken(access_token, member_id)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
 		
 		MemberDto member = null; 
 		try {
@@ -121,7 +122,7 @@ public class MemberController {
 	
 	@GetMapping("/findPassword")
 	public ResponseEntity<Map<String, Object>> findPassword(@RequestHeader("access_token") String access_token, @RequestParam("member_id") String member_id, @RequestParam("member_email") String member_email) {
-		if(!jwtUtil.checkToken(access_token)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+		if(!jwtUtil.checkToken(access_token, member_id)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
 		String password = null;
 		try {
 			password = memberService.findPassword(member_id, member_email);

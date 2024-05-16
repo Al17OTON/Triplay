@@ -35,10 +35,11 @@
 		where member_id = #{member_id}
 	</update>
 	
-	<delete id="removeMember" parameterType="string">
-		delete from member
+	<update id="removeMember" parameterType="string">
+		update member
+		set member_status = "WITHDRAWN"
 		where member_id = #{member_id}
-	</delete>
+	</update>
 	
 	<select id="getMember" parameterType="string" resultType="memberDto">
 		select member_id, member_pw, member_name, member_email, salt, member_status, score, member_register_time

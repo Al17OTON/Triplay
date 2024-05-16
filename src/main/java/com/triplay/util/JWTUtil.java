@@ -97,6 +97,17 @@ public class JWTUtil {
 		}
 	}
 	
+	public boolean checkToken(String token, String member_id) {
+		String id = getUserId(token);
+		
+		if(id != member_id) {
+			System.out.println("다른 멤버의 토큰으로 권한을 요청함");
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public String getUserId(String authorization) {
 		Jws<Claims> claims = null;
 		try {
