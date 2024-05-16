@@ -121,8 +121,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("/findPassword")
-	public ResponseEntity<Map<String, Object>> findPassword(@RequestHeader("access_token") String access_token, @RequestParam("member_id") String member_id, @RequestParam("member_email") String member_email) {
-		if(!jwtUtil.checkToken(access_token, member_id)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+	public ResponseEntity<Map<String, Object>> findPassword(@RequestParam("member_id") String member_id, @RequestParam("member_email") String member_email) {
 		String password = null;
 		try {
 			password = memberService.findPassword(member_id, member_email);
