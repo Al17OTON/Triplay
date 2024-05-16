@@ -16,5 +16,5 @@ public class GameDto {
     private int seedId;
     private String memberId;
     private String difficulty;
-    private String game_title;
+    private String gameTitle;
 }

@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS `triplay`.`seed` (
   `keyword` VARCHAR(255) NOT NULL,
   `count` INT NOT NULL,
   `seed_info` VARCHAR(1000) NOT NULL,
-  PRIMARY KEY (`seed_id`))
+  PRIMARY KEY (`seed_id`),
+  UNIQUE KEY `keyword` (`keyword`,`seed_info`))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `triplay`.`file`

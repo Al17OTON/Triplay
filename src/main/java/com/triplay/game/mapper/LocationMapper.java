@@ -13,5 +13,4 @@ public interface LocationMapper {
 	public List<SidoDto> getSidoList() throws Exception;
 
 	public List<GugunDto> getGugunList(int sidoCode) throws Exception;
-	
 }

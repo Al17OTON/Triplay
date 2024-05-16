@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.triplay.game.mapper.GameMapper">
+
+	<resultMap type="com.triplay.game.dto.GameDto"
+		id="gameDto">
+		<result column="game_id" property="gameId" />
+		<result column="seed_id" property="seedId" />
+		<result column="member_id" property="memberId" />
+		<result column="difficulty" property="difficulty" />
+		<result column="game_title" property="gameTitle" />
+	</resultMap>
+	
+	
+	<insert id="insertGame" parameterType="gameDto">
+		insert into game (seed_id, member_id, difficulty, game_title)
+		values (#{seedId}, #{memberId}, #{difficulty}, #{gameTitle})
+		<selectKey resultType="int" keyProperty="gameId" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<select id="getGameList" resultType="gameDto">
+		select *
+		from game
+	</select>
+	
+	<select id="getGame" parameterType="int" resultType="gameDto">
+		select *
+		from game
+		where game_id = #{gameId}
+	</select>
+
+</mapper>
