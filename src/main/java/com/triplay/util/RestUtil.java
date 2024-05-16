@@ -98,9 +98,23 @@ public class RestUtil {
 	 * 		"resdata" 키에 데이터를 삽입 후 반환
 	 */
 	public static Map<String, Object> setResponseData(Map<String, Object> res, Object resData) {
-		res.put("resdata", resData);
-		return res;
+		return setResponseData(res, "resdata", resData);
 	}
 	
+	/**
+	 * 기본 응답 데이터를 resDataKey에 넣어준다
+	 * @param res
+	 * 		데이터를 담을 map
+	 * @param resDataKey
+	 * 		담을 데이터의 키
+	 * @param resData
+	 * 		담을 데이터
+	 * @return
+	 * 		resDataKey 에 데이터를 삽입 후 반환
+	 */
+	public static Map<String, Object> setResponseData(Map<String, Object> res, String resDataKey, Object resData) {
+		res.put(resDataKey, resData);
+		return res;
+	}
 
 }
