@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.triplay.member.mapper.MemberMapper">
+	
+	<resultMap type="com.triplay.member.dto.MemberDto"
+		id="memberDto">
+		<result column="member_id" property="member_id" />
+		<result column="member_pw" property="member_pw" />
+		<result column="member_name" property="member_name" />
+		<result column="member_email" property="member_email" />
+		<result column="salt" property="salt" />
+		<result column="member_status" property="member_status" />
+		<result column="score" property="score" />
+		<result column="member_register_time" property="member_register_time" />
+	</resultMap>
+	
+	<select id="login" parameterType="map" resultType="memberDto">
+		select member_id, member_pw, member_name, member_email, salt, member_status, score, member_register_time
+		from member
+		where member_id = #{member_id} and member_pw = #{member_pw} and member_status = 'ACTIVE'
+	</select>
+	
+	<insert id="signup" parameterType="memberDto">
+		insert into member 
+			(member_id, member_pw, member_name, member_email, salt)
+		value (#{member_id}, #{member_pw}, #{member_name}, #{member_email}, #{salt})
+	</insert>
+	
+	<update	id="modifyMember" parameterType="memberDto">
+		update member
+		set member_pw = #{member_pw}, member_name = #{member_name}, member_email = #{member_email}, salt = #{salt}
+		where member_id = #{member_id}
+	</update>
+	
+	<update id="removeMember" parameterType="string">
+		update member
+		set member_status = "WITHDRAWN"
+		where member_id = #{member_id}
+	</update>
+	
+	<select id="getMember" parameterType="string" resultType="memberDto">
+		select member_id, member_pw, member_name, member_email, salt, member_status, score, member_register_time
+		from member
+		where member_id = #{member_id}
+	</select>
+	
+	<select id="findPassword" parameterType="map" resultType="string">
+		select member_pw
+		from member
+		where member_id = #{member_id} and member_email = #{member_email}
+	</select>
+	
+	<select id="isIdExist" parameterType="string" resultType="boolean">
+		select exists
+			(select * from member where member_id = #{member_id})
+	</select>
+	
+</mapper>
