@@ -37,6 +37,8 @@ public class MemberController {
 		String member_id = loginData.get("member_id");
 		String member_pw = loginData.get("member_pw");
 		
+		System.out.println(member_id + " " + member_pw);
+		
 		MemberDto loginMember = null;
 		try {
 			loginMember = memberService.login(member_id, member_pw);
@@ -53,7 +55,9 @@ public class MemberController {
 		log.debug("access token : {}", access_token);
 			
 		loginMember.setMember_pw("");	//비밀번호 감추기
-			
+		loginMember.setSalt("");	//비밀번호 감추기
+		
+		System.out.println("로그인 성공");
 		res = RestUtil.makeResponseTemplete("로그인 성공");
 		RestUtil.setResponseData(res, "access_token", access_token);
 		RestUtil.setResponseData(res, loginMember);
@@ -64,6 +68,7 @@ public class MemberController {
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signin(@RequestBody MemberDto member) {
 		try {
+			member.setSalt("test_salt_temp"); 	//temp salt; // TODO: make salt
 			memberService.signup(member);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,7 +115,11 @@ public class MemberController {
 		}
 		
 		if(member == null) return RestUtil.makeErrorResponseEntity("회원조회 실패");
-
+		
+		// 중요 정보 가리기 TODO : 고치기
+		member.setMember_pw("");
+		member.setSalt("");
+		
 		Map<String, Object> res = RestUtil.makeResponseTemplete("회원조회 성공");
 		RestUtil.setResponseData(res, member);
 		
@@ -147,6 +156,20 @@ public class MemberController {
 		RestUtil.setResponseData(res, isOk);
 		
 		return RestUtil.makeResponseEntity(res);
+	}
+	
+	@PutMapping("/addScore")
+	public ResponseEntity<Map<String, Object>> addPoint(@RequestHeader("access_token") String access_token, @RequestParam("member_id") String member_id, @RequestParam("amount") int amount) {
+		if(!jwtUtil.checkToken(access_token, member_id)) return RestUtil.makeResponseEntity("권한 없음", HttpStatus.UNAUTHORIZED);
+		
+		try {
+			memberService.addScore(member_id, amount);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return RestUtil.makeErrorResponseEntity("점수추가 실패");
+		}
+		
+		return RestUtil.makeResponseEntity("점수추가 성공");
 	}
 }
 

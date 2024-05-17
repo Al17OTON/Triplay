@@ -58,4 +58,10 @@
 			(select * from member where member_id = #{member_id})
 	</select>
 	
+	<update id="addScore" parameterType="map">
+		update member
+		set score = score + #{amount}
+		where member_id = #{member_id}
+	</update>
+	
 </mapper>
