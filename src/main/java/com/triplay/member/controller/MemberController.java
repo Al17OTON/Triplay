@@ -71,6 +71,7 @@ public class MemberController {
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signin(@RequestBody MemberDto member) {
 		try {
+			member.setSalt("test_salt_temp"); 	//temp salt; // TODO: make salt
 			memberService.signup(member);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,7 +118,11 @@ public class MemberController {
 		}
 		
 		if(member == null) return RestUtil.makeErrorResponseEntity("회원조회 실패");
-
+		
+		// 중요 정보 가리기 TODO : 고치기
+		member.setMember_pw("");
+		member.setSalt("");
+		
 		Map<String, Object> res = RestUtil.makeResponseTemplete("회원조회 성공");
 		RestUtil.setResponseData(res, member);
 		
