@@ -46,4 +46,9 @@ public class MemberServiceImpl implements MemberService {
 	public void modifyMember(MemberDto m) throws Exception {
 		memberMapper.modifyMember(m);
 	}
+
+	@Override
+	public void addScore(String member_id, int amount) throws Exception {
+		memberMapper.addScore(member_id, amount);
+	}
 }

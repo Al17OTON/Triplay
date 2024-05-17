@@ -10,4 +10,5 @@ public interface MemberService {
 	public String findPassword(String member_id, String member_email) throws Exception;
 	public void removeMember(String member_id) throws Exception;
 	public void modifyMember(MemberDto m) throws Exception;
+	public void addScore(String member_id, int amount) throws Exception;
 }
