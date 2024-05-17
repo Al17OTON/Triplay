@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.triplay.game.mapper.SeedMapper">
+
+	<resultMap type="com.triplay.game.dto.SeedDto"
+		id="seedDto">
+		<result column="seed_id" property="seedId" />
+		<result column="keyword" property="keyword" />
+		<result column="count" property="count" />
+		<result column="sido_info" property="seedInfo" />
+	</resultMap>
+	
+	
+	<insert id="insertSeed" parameterType="seedDto">
+		insert into seed (keyword, count, seed_info)
+		values (#{keyword}, #{count}, #{seedInfo})
+		<selectKey resultType="int" keyProperty="seedId" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<select id="getSeedList" resultType="seedDto">
+		select *
+		from seed
+	</select>
+	
+	<select id="getSeed" parameterType="int" resultType="seedDto">
+		select *
+		from seed
+		where seed_id = #{seedId}
+	</select>
+
+</mapper>
