@@ -31,7 +31,7 @@
 	
 	<update	id="modifyMember" parameterType="memberDto">
 		update member
-		set member_pw = #{member_pw}, member_name = #{member_name}, member_email = #{member_email}, salt = #{salt}
+		set member_pw = #{member_pw}, member_name = #{member_name}, member_email = #{member_email}
 		where member_id = #{member_id}
 	</update>
 	
