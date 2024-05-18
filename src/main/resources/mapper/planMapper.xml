@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.triplay.plan.mapper.PlanMapper">
+
+	<resultMap type="com.triplay.plan.dto.PlanDto"
+		id="planDto">
+		<result column="plan_id" property="planId" />
+		<result column="seed_id" property="seedId" />
+		<result column="member_id" property="memberId" />
+		<result column="plan_title" property="planTitle" />
+		<result column="plan_content" property="planContent" />
+		<result column="estimate_time" property="estimateTime" />
+		<result column="distance" property="distance" />
+		<result column="hit" property="hit" />
+		<result column="file_id" property="fileId" />
+		<result column="register_time" property="registerTime" />
+		<result column="keyword" property="keyword" />
+		<result column="seed_info" property="seedInfo" />
+	</resultMap>
+	
+	<resultMap type="com.triplay.plan.dto.FileDto"
+		id="fileDto">
+		<result column="file_id" property="fileId" />
+		<result column="save_folder" property="saveFolder" />
+		<result column="original_folder" property="originalFolder" />
+		<result column="save_file" property="saveFile" />
+	</resultMap>
+	
+	<insert id="insertFile" parameterType="fileDto">
+		insert into file (save_folder, original_folder, save_file)
+		values (#{saveFolder}, #{originalFolder}, #{saveFile})
+		<selectKey resultType="int" keyProperty="planId" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<select id="getFile" parameterType="int">
+		select * from file
+		where file_id = #{fileId};
+	</select>
+
+<!-- plan 테이블 컬럼: plan_id, plan_title, member_id, plan_content, seed_id, 
+					estimate_time, distance, hit, file_id, register_time  -->
+	<insert id="insertPlan" parameterType="planDto">
+		insert into plan  (plan_title, member_id, plan_content, seed_id, estimate_time, distance, file_id)
+		values (#{planTitle}, #{memberId}, #{planContent}, #{seedId}, #{estimateTime}, #{distance}, #{fileId})
+		<selectKey resultType="int" keyProperty="planId" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<!-- select s.seed_id, s.keyword, s.count, s.seed_info, g.member_id, g.difficulty, g.game_title, g.game_id
+	from seed s join game g on s.seed_id = g.seed_id; -->
+	<select id="getPlanList" parameterType="map" resultMap="planDto">
+		select p.plan_id, s.seed_id, p.member_id, p.plan_title, p.estimate_time, p.plan_content, p.distance, p.hit, p.register_time, p.file_id, s.keyword, s.seed_info
+		from plan p join seed s on p.seed_id = s.seed_id;
+	</select>
+	
+	<select id="getPlan" parameterType="int" resultMap="planDto">
+		select p.plan_id, s.seed_id, p.member_id, p.plan_title, p.estimate_time, 
+			   p.plan_content, p.distance, p.hit, p.register_time,
+			   p.file_id, s.keyword, s.seed_info
+		from plan p join seed s on p.seed_id = s.seed_id
+		where p.plan_id = #{planId};
+	</select>
+
+	<update id="updateHit" parameterType="int">
+		update plan
+		set hit = hit + 1
+		where plan_id = #{planId}
+	</update>
+</mapper>
