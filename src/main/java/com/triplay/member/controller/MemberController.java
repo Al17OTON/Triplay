@@ -1,5 +1,6 @@
 package com.triplay.member.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.triplay.member.dto.LeaderBoardDto;
 import com.triplay.member.dto.MemberDto;
 import com.triplay.member.service.MemberService;
 import com.triplay.util.JWTUtil;
@@ -170,6 +173,45 @@ public class MemberController {
 		}
 		
 		return RestUtil.makeResponseEntity("점수추가 성공");
+	}
+	
+	@GetMapping("/leaderBoard")
+	public ResponseEntity<Map<String, Object>> getLeaderBoard() {
+		int num = 10; 	//top 10 까지 가져오기
+		List<LeaderBoardDto> leaderBoard = null;
+		try {
+			leaderBoard = memberService.getLeaderBoard(num);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return RestUtil.makeErrorResponseEntity("조회 실패");
+		}
+		
+		if(leaderBoard == null) return RestUtil.makeErrorResponseEntity("조회 실패");
+		
+		Map<String, Object> res = RestUtil.makeResponseTemplete("리더보드조회 성공");
+		RestUtil.setResponseData(res, leaderBoard);
+		
+		return RestUtil.makeResponseEntity(res);
+	}
+	
+	@GetMapping("/leaderBoard/{member_id}")
+	public ResponseEntity<Map<String, Object>> getLeaderBoard(@PathVariable("member_id") String member_id) {
+		LeaderBoardDto me = null;
+		try {
+			me = memberService.getMyLeaderBoard(member_id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return RestUtil.makeErrorResponseEntity("조회 실패");
+		}
+		
+		if(me == null) return RestUtil.makeErrorResponseEntity("조회 실패");
+		
+		Map<String, Object> res = RestUtil.makeResponseTemplete("리더보드조회 성공");
+		RestUtil.setResponseData(res, me);
+		
+		return RestUtil.makeResponseEntity(res);
 	}
 }
 

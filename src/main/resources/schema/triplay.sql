@@ -104,6 +104,27 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+-- -----------------------------------------------------
+-- Table `ssafytrip`.`memo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `triplay`.`memo` ;
+
+CREATE TABLE IF NOT EXISTS `triplay`.`memo` (
+  `memo_id` INT NOT NULL AUTO_INCREMENT,
+  `member_id` VARCHAR(16) NULL DEFAULT NULL,
+  `comment` VARCHAR(500) NULL DEFAULT NULL,
+  `ref` INT NULL DEFAULT null,
+  `step` INT NULL DEFAULT null,
+  `depth` INT NULL DEFAULT null,
+  `memo_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `plan_id` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`memo_id`),
+  INDEX `memo_to_plan_id_fk` (`plan_id` ASC) VISIBLE,
+  INDEX `memo_to_member_fk_idx` (`member_id` ASC) VISIBLE,
+  CONSTRAINT `memo_to_plan_id_fk`
+    FOREIGN KEY (`plan_id`)
+    REFERENCES `triplay`.`plan` (`plan_id`)
+    ON DELETE CASCADE)
 
 
 -- --------------dump 파일에서 가져온 시군구 코드-----------------
