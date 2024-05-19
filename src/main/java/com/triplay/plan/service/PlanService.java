@@ -9,7 +9,9 @@ import com.triplay.plan.dto.PlanDto;
 public interface PlanService {
 	
 	void insertPlan(PlanDto planDto) throws Exception;
-		
+	
+	void deletePlan(int planId) throws Exception;
+
 	List<PlanDto> getPlanList(Map<String, String> map) throws Exception;
 	
 	PlanDto getPlan(int planId) throws Exception;

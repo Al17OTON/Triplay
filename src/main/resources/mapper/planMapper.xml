@@ -30,7 +30,7 @@
 	<insert id="insertFile" parameterType="fileDto">
 		insert into file (save_folder, original_folder, save_file)
 		values (#{saveFolder}, #{originalFolder}, #{saveFile})
-		<selectKey resultType="int" keyProperty="planId" order="AFTER">
+		<selectKey resultType="int" keyProperty="fileId" order="AFTER">
 			select last_insert_id()
 		</selectKey>
 	</insert>
@@ -49,6 +49,10 @@
 			select last_insert_id()
 		</selectKey>
 	</insert>
+	
+	<delete id="deletePlan" parameterType="int">
+		delete from plan where plan_id = #{planId}
+	</delete>
 	
 	<!-- select s.seed_id, s.keyword, s.count, s.seed_info, g.member_id, g.difficulty, g.game_title, g.game_id
 	from seed s join game g on s.seed_id = g.seed_id; -->
