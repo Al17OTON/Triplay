@@ -18,30 +18,30 @@ public class PlanServiceImpl implements PlanService{
 	
 	@Override
 	public void insertPlan(PlanDto planDto) throws Exception {
-		FileDto file = planDto.getFile();
-		if(file != null) {
-			pMap.insertFile(file);
-			planDto.setFileId(file.getFileId());
-		}
 		pMap.insertPlan(planDto);
 	}
 
+	public void deletePlan(int planId) throws Exception{
+		pMap.deletePlan(planId);
+	}
+	
 	@Override
 	public List<PlanDto> getPlanList(Map<String, String> map) throws Exception {
 		List<PlanDto> planList = pMap.getPlanList(map);
 		// 여기서 file 정보까지 더한 후 return
+		System.out.println(planList);
 		for (PlanDto planDto : planList) {
 			if(planDto.getFileId() == 0) continue;
 			FileDto file = pMap.getFile(planDto.getFileId());
 			planDto.setFile(file);
 		}
-		System.out.println(planList);
 		return planList;
 	}
 
 	@Override
 	public PlanDto getPlan(int planId) throws Exception {
 		PlanDto plan = pMap.getPlan(planId);
+		if(plan.getFileId() != 0) plan.setFile(pMap.getFile(plan.getFileId()));
 		System.out.println(plan);
 		return plan;
 	}
@@ -53,7 +53,6 @@ public class PlanServiceImpl implements PlanService{
 	
 	@Override
 	public void insertFile(FileDto fileDto) throws Exception{
-		
+		pMap.insertFile(fileDto);
 	}
-
 }

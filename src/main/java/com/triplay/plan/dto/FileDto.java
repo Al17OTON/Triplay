@@ -13,7 +13,14 @@ import lombok.ToString;
 @Setter
 public class FileDto {
 	private int fileId;
-	private String save_folder;
-	private String original_folder;
-	private String save_file;
+	private String saveFolder;
+	private String originalFolder;
+	private String saveFile;
+	
+	public FileDto(String saveFolder, String originalFolder, String saveFile) {
+		super();
+		this.saveFolder = saveFolder;
+		this.originalFolder = originalFolder;
+		this.saveFile = saveFile;
+	}
 }

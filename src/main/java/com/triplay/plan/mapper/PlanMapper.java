@@ -19,6 +19,8 @@ public interface PlanMapper {
 	
 	// 여행 계획 조회
 	PlanDto getPlan(int planId) throws Exception;
+	
+	void deletePlan(int planId) throws Exception;
 
 	void updateHit(int planId) throws Exception;
 
@@ -26,5 +28,4 @@ public interface PlanMapper {
 	
 	void insertFile(FileDto fileDto) throws Exception;
 	
-	// 수정 및 삭제
 }
