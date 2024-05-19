@@ -17,6 +17,12 @@
 		<result column="member_register_time" property="member_register_time" />
 	</resultMap>
 	
+	<resultMap type="com.triplay.member.dto.LeaderBoardDto" id="leaderBoardDto">
+		<result column="member_id" property="member_id"/>
+		<result column="score" property="score"/>
+		<result column="rank" property="rank"/>
+	</resultMap>
+	
 	<select id="login" parameterType="map" resultType="memberDto">
 		select member_id, member_pw, member_name, member_email, salt, member_status, score, member_register_time
 		from member
@@ -63,5 +69,21 @@
 		set score = score + #{amount}
 		where member_id = #{member_id}
 	</update>
+	
+	<select id="getLeaderBoard" parameterType="integer" resultType="leaderBoardDto">
+		select 
+			member_id, score, 
+			row_number() over(order by score DESC) as `rank`
+    		from member
+    		limit #{num}
+	</select>
+	
+	<select id="getMyLeaderBoard" parameterType="string" resultType="leaderBoardDto">
+		select a.member_id as `member_id`, a.score as `score`, b.`rank` as `rank`
+		from member as a
+			inner join (select member_id, rank() over(order by score desc) as `rank` from member) as b
+				on a.member_id = b.member_id
+		where a.member_id = #{member_id}
+	</select>
 	
 </mapper>

@@ -1,8 +1,11 @@
 package com.triplay.member.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.triplay.member.dto.LeaderBoardDto;
 import com.triplay.member.dto.MemberDto;
 import com.triplay.member.mapper.MemberMapper;
 
@@ -50,5 +53,15 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void addScore(String member_id, int amount) throws Exception {
 		memberMapper.addScore(member_id, amount);
+	}
+
+	@Override
+	public List<LeaderBoardDto> getLeaderBoard(int num) throws Exception {
+		return memberMapper.getLeaderBoard(num);
+	}
+
+	@Override
+	public LeaderBoardDto getMyLeaderBoard(String member_id) throws Exception {
+		return memberMapper.getMyLeaderBoard(member_id);
 	}
 }

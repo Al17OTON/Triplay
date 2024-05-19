@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.triplay.memo.mapper.MemoMapper">
+
+	<resultMap type="com.triplay.memo.dto.MemoDto"
+		id="memoDto">
+		<result column="memo_id" property="memo_id" />
+		<result column="member_id" property="member_id" />
+		<result column="comment" property="comment" />
+		<result column="ref" property="ref" />
+		<result column="step" property="step" />
+		<result column="depth" property="depth" />
+		<result column="memo_time" property="memo_time" />
+		<result column="plan_id" property="plan_id" />
+	</resultMap>
+	
+	<insert id="addMemo" parameterType="map">
+		insert into memo (plan_id, member_id, comment, ref, step, depth)
+		values (#{plan_id}, #{memo.member_id}, #{memo.comment}, #{plan_id}, #{parent_step} <![CDATA[ + ]]> 1, #{parent_depth} <![CDATA[ + ]]> 1)
+	</insert>
+	
+	<update id="deleteMemo" parameterType="integer">
+		update memo
+		set comment = "삭제된 댓글입니다.", user_id = "UNKNOWN"
+		where memo_id = #{memo_id}
+	</update>
+	
+	<update id="modifyMemo" parameterType="memoDto">
+		update memo
+		set comment = #{memo.comment} where memo_id = #{memo.memo_id}
+	</update>
+	
+	<select id="getMemoList" parameterType="integer" resultType="memoDto">
+		select * from memo where plan_id=#{plan_id}
+	</select>
+	
+	<select id="getMemo" parameterType="integer" resultType="memoDto">
+		select * from memo where memo_id = #{memo_id}
+	</select>
+	
+	<update id="updateOrder" parameterType="map">
+		update memo set step = step + 1 where step >= #{target_step} and ref = #{plan_id}
+	</update>
+	
+	
+</mapper>
