@@ -22,21 +22,21 @@
 	
 	<update id="deleteMemo" parameterType="integer">
 		update memo
-		set comment = "삭제된 댓글입니다.", user_id = "UNKNOWN"
+		set comment = "삭제된 댓글입니다.", member_id = "UNKNOWN"
 		where memo_id = #{memo_id}
 	</update>
 	
 	<update id="modifyMemo" parameterType="memoDto">
 		update memo
-		set comment = #{memo.comment} where memo_id = #{memo.memo_id}
+		set comment = #{comment} where memo_id = #{memo_id}
 	</update>
 	
 	<select id="getMemoList" parameterType="integer" resultType="memoDto">
-		select * from memo where plan_id=#{plan_id}
+		select memo_id, member_id, comment, ref, step, depth, memo_time, plan_id from memo where plan_id=#{plan_id}
 	</select>
 	
 	<select id="getMemo" parameterType="integer" resultType="memoDto">
-		select * from memo where memo_id = #{memo_id}
+		select memo_id, member_id, comment, ref, step, depth, memo_time, plan_id from memo where memo_id = #{memo_id}
 	</select>
 	
 	<update id="updateOrder" parameterType="map">
