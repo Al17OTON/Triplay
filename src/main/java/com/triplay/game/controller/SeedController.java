@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.triplay.game.dto.SeedDto;
@@ -39,7 +40,7 @@ public class SeedController {
         return RestUtil.makeResponseEntity(res);
 	}
 	
-	@GetMapping
+	@GetMapping("/list")
 	public ResponseEntity<Map<String, Object>> getSeedList() throws Exception{
 		List<SeedDto> seedList = sSer.getSeedList();
 		Map<String, Object> res = RestUtil.makeResponseTemplete();
@@ -48,13 +49,16 @@ public class SeedController {
         return RestUtil.makeResponseEntity(res);
 	}
 	
-	@GetMapping("/{seedId}")
-	public ResponseEntity<Map<String, Object>> getSeed(
-			@PathVariable("seedId") int seedId) throws Exception{
-		SeedDto seed = sSer.getSeed(seedId);
+	@GetMapping
+	public ResponseEntity<Map<String, Object>> checkSeedDuplicated(
+			@RequestParam("seedInfo") String seedInfo,
+			@RequestParam("keyword") String keyword
+			) throws Exception{
+		SeedDto seed = sSer.checkSeedDuplicated(seedInfo, keyword);
+		System.out.println(seed);
 		Map<String, Object> res = RestUtil.makeResponseTemplete();
         RestUtil.setResponseData(res, seed);
-
+        // seed가 있으면 그 seedId 사용하고, 없으면 seedSave ~~ 
         return RestUtil.makeResponseEntity(res);
 	}
 }
