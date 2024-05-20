@@ -11,4 +11,6 @@ public interface SeedService {
 	public List<SeedDto> getSeedList() throws Exception;
 	
 	public SeedDto getSeed(int seedId) throws Exception;
+	
+	public SeedDto checkSeedDuplicated(String seedInfo, String keyword) throws Exception;
 }
