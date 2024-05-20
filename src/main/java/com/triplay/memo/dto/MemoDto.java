@@ -7,11 +7,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString
 @Getter
 @Setter
-public class MemoDto implements Comparable<MemoDto> {
+public class MemoDto {
 	private int memo_id;
 	private String member_id;
 	private String comment;
@@ -22,8 +21,8 @@ public class MemoDto implements Comparable<MemoDto> {
 	private int plan_id;
 	
 	
-	@Override
-	public int compareTo(MemoDto o) {
-		return Integer.compare(this.step, o.step);
-	}
+//	@Override
+//	public int compareTo(MemoDto o) {
+//		return Integer.compare(this.step, o.step);
+//	}
 }

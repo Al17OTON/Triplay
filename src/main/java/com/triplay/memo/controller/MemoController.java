@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,17 +34,19 @@ public class MemoController {
 	@Autowired
 	private MemoService memoService;
 	
-	@PostMapping("/add")
-	public ResponseEntity<Map<String, Object>> addMemo(@RequestBody MemoDto memo, @RequestBody Map<String, Integer> info) {
+	@PostMapping("/add/{plan_id}")
+	public ResponseEntity<Map<String, Object>> addMemo(@RequestHeader String access_token, @RequestBody Map<String, Object> memo, @PathVariable("plan_id") int plan_id) {
+		int parent_step = (Integer)memo.get("parent_step");
+		int parent_depth = (Integer)memo.get("parent_depth");
 		
-		int plan_id = info.get("plan_id");
-		int parent_step = info.get("parent_step");
-		int parent_depth = info.get("parent_depth");
+		MemoDto m = new MemoDto(-1, "", "", -1, -1, -1, "", -1);
+		m.setComment((String)memo.get("comment"));
+		m.setMember_id((String)memo.get("member_id"));
 		
 		try {
 			if(parent_depth >= 6) throw new SQLException();
-			memoService.updateOrder(plan_id, parent_step);
-			memoService.addMemo(plan_id, parent_step, parent_depth, memo);
+			memoService.updateOrder(plan_id, parent_step + 1);
+			memoService.addMemo(plan_id, parent_step, parent_depth, m);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,8 +56,8 @@ public class MemoController {
 		return RestUtil.makeResponseEntity("댓글등록 성공");
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<Map<String, Object>> deleteMemo(@RequestParam("memo_id") int memo_id) {
+	@DeleteMapping("/delete/{memo_id}")
+	public ResponseEntity<Map<String, Object>> deleteMemo(@PathVariable("memo_id") int memo_id) {
 		try {
 			memoService.deleteMemo(memo_id);
 		} catch (Exception e) {
@@ -91,7 +94,7 @@ public class MemoController {
 			return RestUtil.makeErrorResponseEntity("댓글조회 실패");
 		}
 		
-		if(list != null) Collections.sort(list);	//정렬해서 보내기
+//		if(list != null) Collections.sort(list);	//정렬해서 보내기 -> 클라이언트에서 하기
 		
 		Map<String, Object> res = RestUtil.makeResponseTemplete("댓글조회 성공");
 		RestUtil.setResponseData(res, list);
