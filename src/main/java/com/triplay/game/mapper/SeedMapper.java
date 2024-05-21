@@ -17,4 +17,7 @@ public interface SeedMapper {
 	
 	// seed 1개 select
 	public SeedDto getSeed(int seedId) throws Exception;
+	
+	// seed 중복 확인
+	public SeedDto checkSeedDuplicated(String seedInfo, String keyword) throws Exception;
 }

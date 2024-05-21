@@ -30,4 +30,9 @@ public class SeedServiceImpl implements SeedService {
 		return sMap.getSeed(seedId);
 	}
 
+	@Override
+	public SeedDto checkSeedDuplicated(String seedInfo, String keyword) throws Exception {
+		return sMap.checkSeedDuplicated(seedInfo, keyword);
+	}
+
 }

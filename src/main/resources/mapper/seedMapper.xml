@@ -32,5 +32,11 @@
 		from seed
 		where seed_id = #{seedId}
 	</select>
+	
+	<select id="checkSeedDuplicated" parameterType="string" resultType="seedDto">
+		select *
+		from seed
+		where seed_info = #{seedInfo} and keyword = #{keyword}
+	</select>
 
 </mapper>
