@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ import com.triplay.member.service.MemberService;
 import com.triplay.util.JWTUtil;
 import com.triplay.util.RestUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -36,11 +38,12 @@ public class MemberController {
 	private JWTUtil jwtUtil;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginData) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> loginData, HttpServletRequest request) {
 		String member_id = loginData.get("member_id");
 		String member_pw = loginData.get("member_pw");
 		
-		System.out.println(member_id + " " + member_pw);
+		
+		System.out.println(request.getRemoteAddr() + " - " + member_id + " " + member_pw);
 		
 		MemberDto loginMember = null;
 		try {
@@ -69,9 +72,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/signup")
-	public ResponseEntity<Map<String, Object>> signin(@RequestBody MemberDto member) {
+	public ResponseEntity<Map<String, Object>> signin(@RequestBody MemberDto member, HttpServletRequest request) {
 		try {
-			member.setSalt("test_salt_temp"); 	//temp salt; // TODO: make salt
+			member.setSalt("test_salt_temp-signupIP:" + request.getRemoteAddr()); 	//temp salt; // TODO: make salt
 			memberService.signup(member);
 		} catch (Exception e) {
 			e.printStackTrace();
