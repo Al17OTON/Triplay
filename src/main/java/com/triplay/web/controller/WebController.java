@@ -41,6 +41,7 @@ public class WebController {
 			return RestUtil.makeErrorResponseEntity();
 		}
 		
+		System.out.println(title + " " + address);
 		
 		Map<String, Object> res = RestUtil.makeResponseTemplete("조회성공");
 		RestUtil.setResponseData(res, "title", title);
