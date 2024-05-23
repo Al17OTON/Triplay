@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`member` (
   `member_register_time` DATETIME NOT NULL default CURRENT_TIMESTAMP,
   check (member_status in ('ACTIVE', 'WITHDRAWN')),
   PRIMARY KEY (`member_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`game` (
   `game_title` VARCHAR(255) NULL,
   check (difficulty in ('EASY', 'HARD', null)),
   PRIMARY KEY (`game_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`seed` (
   `count` INT NOT NULL,
   `seed_info` VARCHAR(500) NOT NULL,
   PRIMARY KEY (`seed_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
   -- UNIQUE KEY `keyword` (`keyword`,`seed_info`))
 -- -----------------------------------------------------
 -- Table `triplay`.`file`
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`file` (
   `original_folder` VARCHAR(255) NOT NULL,
   `save_file` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`file_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`plan` (
   `file_id` INT NULL,
   `register_time` DATETIME NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY (`plan_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`memo` (
   CONSTRAINT `memo_to_plan_id_fk`
     FOREIGN KEY (`plan_id`)
     REFERENCES `triplay`.`plan` (`plan_id`)
-    ON DELETE CASCADE);
+    ON DELETE CASCADE) DEFAULT CHARSET=utf8mb4;
 
 
 -- --------------dump 파일에서 가져온 시군구 코드-----------------
@@ -142,7 +142,7 @@ CREATE TABLE `sido` (
   `sido_code` int NOT NULL,
   `sido_name` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`sido_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +168,7 @@ CREATE TABLE `gugun` (
   PRIMARY KEY (`gugun_code`,`sido_code`),
   KEY `gugun_to_sido_sido_code_fk_idx` (`sido_code`),
   CONSTRAINT `gugun_to_sido_sido_code_fk` FOREIGN KEY (`sido_code`) REFERENCES `sido` (`sido_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
