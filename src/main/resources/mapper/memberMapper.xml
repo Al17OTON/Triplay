@@ -81,7 +81,7 @@
 	<select id="getMyLeaderBoard" parameterType="string" resultType="leaderBoardDto">
 		select a.member_id as `member_id`, a.score as `score`, b.`rank` as `rank`
 		from member as a
-			inner join (select member_id, rank() over(order by score desc) as `rank` from member) as b
+			inner join (select member_id, row_number() over(order by score desc) as `rank` from member) as b
 				on a.member_id = b.member_id
 		where a.member_id = #{member_id}
 	</select>

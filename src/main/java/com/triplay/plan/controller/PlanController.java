@@ -66,6 +66,7 @@ public class PlanController {
 		}
 		System.out.println(planDto);
 		pSer.insertPlan(planDto);
+
 		return RestUtil.makeResponseEntity("계획 저장 성공");
 	}
 	
