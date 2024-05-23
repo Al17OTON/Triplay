@@ -15,7 +15,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema triplay
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `triplay` DEFAULT CHARACTER SET utf8 ;
-USE `triplay` ;
 
 -- -----------------------------------------------------
 -- Table `triplay`.`member`
@@ -62,10 +61,9 @@ CREATE TABLE IF NOT EXISTS `triplay`.`seed` (
   `keyword` VARCHAR(255) NOT NULL,
   `count` INT NOT NULL,
   `seed_info` VARCHAR(500) NOT NULL,
-  PRIMARY KEY (`seed_id`),
-  UNIQUE KEY `keyword` (`keyword`,`seed_info`))
+  PRIMARY KEY (`seed_id`))
 ENGINE = InnoDB;
-
+  -- UNIQUE KEY `keyword` (`keyword`,`seed_info`))
 -- -----------------------------------------------------
 -- Table `triplay`.`file`
 -- -----------------------------------------------------
@@ -111,7 +109,7 @@ DROP TABLE IF EXISTS `triplay`.`memo` ;
 
 CREATE TABLE IF NOT EXISTS `triplay`.`memo` (
   `memo_id` INT NOT NULL AUTO_INCREMENT,
-  `member_id` VARCHAR(16) NULL DEFAULT NULL,
+  `member_id` VARCHAR(255) NULL DEFAULT NULL,
   `comment` VARCHAR(500) NULL DEFAULT NULL,
   `ref` INT NULL DEFAULT null,
   `step` INT NULL DEFAULT null,
@@ -124,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `triplay`.`memo` (
   CONSTRAINT `memo_to_plan_id_fk`
     FOREIGN KEY (`plan_id`)
     REFERENCES `triplay`.`plan` (`plan_id`)
-    ON DELETE CASCADE)
+    ON DELETE CASCADE);
 
 
 -- --------------dump 파일에서 가져온 시군구 코드-----------------
